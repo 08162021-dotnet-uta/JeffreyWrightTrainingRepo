@@ -5,33 +5,31 @@ using System.Collections.Generic;
 
 namespace p0.StoreApplication.Storage.Repositories
 {
-  public class StoreRepository : IRepository<Store>
+  public class ProductRepository : IRepository<Product>
   {
-    private const string _path = @"/home/jeffrey/revature/training_repo/data/stores.xml";
+    private const string _path = @"/home/jeffrey/revature/training_repo/data/products.xml";
     private static readonly FileAdapter _fileAdapter = new FileAdapter();
-
-    public StoreRepository()
+    public ProductRepository()
     {
 
     }
-
     public bool Delete()
     {
       throw new System.NotImplementedException();
     }
 
-    public bool Insert(Store entry)
+    public bool Insert(Product entry)
     {
-      _fileAdapter.WriteToFile<Store>(_path, entry);
+      _fileAdapter.WriteToFile<Product>(_path, entry);
       return true;
     }
 
-    public List<Store> Select()
+    public List<Product> Select()
     {
-      return _fileAdapter.ReadFromFile<List<Store>>(_path);
+      return _fileAdapter.ReadFromFile<List<Product>>(_path);
     }
 
-    public Store Update()
+    public Product Update()
     {
       throw new System.NotImplementedException();
     }
