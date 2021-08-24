@@ -23,6 +23,13 @@ namespace StringManipulationChallenge
       fName = "Jeffrey";
       lName = "Wright";
       userFullName = String.Concat(fName, lName);
+
+      Console.WriteLine(StringToUpper(lowerCaseString));
+      Console.WriteLine(StringToLower(userInputString));
+      Console.WriteLine(StringTrim("   Hello World   "));
+      Console.WriteLine(StringSubstring(userInputString, elementNum, numberLessThanStringLength));
+      Console.WriteLine(SearchChar(userInputString, char1));
+      Console.WriteLine(ConcatNames(fName, lName));
     }
 
     /// <summary>
