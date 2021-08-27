@@ -7,4 +7,4 @@ build_property.PublishSingleFile =
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
 build_property.RootNamespace = Calculator
-build_property.ProjectDir = /home/jeffrey/revature/training_repo/week1/Calculator/
+build_property.ProjectDir = C:\Users\wrigh\Source\Repos\JeffreyWrightRevature\JeffreyWrightTrainingRepo\week1\Calculator\
