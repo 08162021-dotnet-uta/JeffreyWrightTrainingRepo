@@ -32,11 +32,5 @@ namespace p0.StoreApplication.Storage.Adapters
       // write to file
       xml.Serialize(file, data);
     }
-
-    public void UseReadFile()
-    {
-      // file path
-      ReadFromFile<Store>(@"/home/jeffrey/revature/training_repo/data/stores.xml");
-    }
   }
 }

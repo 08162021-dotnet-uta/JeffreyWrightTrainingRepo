@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using p0.StoreApplication.Domain.Abstracts;
 using p0.StoreApplication.Domain.Models;
 using p0.StoreApplication.Storage.Repositories;
 using p0.StoreApplication.Client.Singletons;
@@ -39,9 +40,12 @@ namespace p0.StoreApplication.Client
       switch (option)
       {
         case 1:
-          _customerSingleton.Add(new Customer() { Name = "Elizabeth Medford" });
-          _customerSingleton.Add(new Customer() { Name = "Nicole Medford" });
-          _customerSingleton.Add(new Customer() { Name = "Henry Medford" });
+          var customers = new List<Customer>
+          {
+            new Customer() { Name = "Elizabeth Medford" },
+            new Customer() { Name = "Nicole Medford" },
+            new Customer() { Name = "Henry Medford" }
+          };
           Output<Customer>(_customerSingleton.Customers);
           break;
         case 2:
@@ -50,12 +54,12 @@ namespace p0.StoreApplication.Client
         case 3:
           var stores = new List<Store>()
           {
-            new Store(){ Name = "Store001", State = "IN", City = "Lafayette"},
-            new Store(){ Name = "Store002", State = "TX", City = "San Antonio" },
-            new Store(){ Name = "Store003", State = "AZ", City = "Mesa" },
-            new Store(){ Name = "Store004", State = "CA", City = "Long Beach"},
-            new Store(){ Name = "Store005", State = "DC", City = "Washington"},
-            new Store(){ Name = "Store006", State = "UT", City = "Orem"}
+            new FurnitureStore(){ Name = "IKEA", State = "IN", City = "Fishers"},
+            new TechStore(){ Name = "Best Buy", State = "TX", City = "San Antonio" },
+            new MultimediaStore(){ Name = "Jeffrey's Home Entertainment", State = "AZ", City = "Mesa" },
+            new TechStore(){ Name = "Smartphones and Gizmos", State = "CA", City = "Long Beach"},
+            new MultimediaStore(){ Name = "Smithsonian Museum Media Collection", State = "DC", City = "Washington"},
+            new FurnitureStore(){ Name = "Cool Funiture", State = "UT", City = "Orem"}
           };
           Output<Store>(_storeSingleton.Stores);
           break;
