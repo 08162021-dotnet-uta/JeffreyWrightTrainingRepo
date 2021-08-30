@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\p0.StoreApplication.Client\p0.StoreApplication.Client.csproj" />
     <ProjectReference Include="..\p0.StoreApplication.Storage\p0.StoreApplication.Storage.csproj" />
   </ItemGroup>
 

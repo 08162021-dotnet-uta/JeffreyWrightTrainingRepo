@@ -7,7 +7,7 @@ namespace p0.StoreApplication.Client.Singletons
   public class ProductSingleton
   {
     private static ProductSingleton _productSingleton;
-    private static readonly ProductRepository _productRepo = new ProductRepository();
+    private static readonly ProductRepository _productRepo = new();
     public List<Product> Products { get; private set; }
     public static ProductSingleton Instance
     {

@@ -1,15 +1,15 @@
 using Xunit;
-using p0.StoreApplication.Storage.Repositories;
+using p0.StoreApplication.Client.Singletons;
 
 namespace p0.StoreApplication.Testing
 {
-  public class StoreRepositoryTests
+  public class StoreSingletonTests
   {
     [Fact]
     public void Test_StoreCollection()
     {
       // arrange = instance of the entity to test
-      var sut = StoreRepository.Instance;
+      var sut = StoreSingleton.Instance;
 
       // act = execute sut for data
       var actual = sut.Stores;

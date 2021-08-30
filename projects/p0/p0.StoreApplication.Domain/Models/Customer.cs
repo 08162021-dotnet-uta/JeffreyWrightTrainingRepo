@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 namespace p0.StoreApplication.Domain.Models
 {
+  [Serializable()]
   public class Customer
   {
     public int CustomerId { get; set; }

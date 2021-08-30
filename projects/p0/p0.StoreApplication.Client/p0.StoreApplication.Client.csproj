@@ -1,6 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\p0.StoreApplication.Domain\p0.StoreApplication.Domain.csproj" />
     <ProjectReference Include="..\p0.StoreApplication.Storage\p0.StoreApplication.Storage.csproj" />
   </ItemGroup>
