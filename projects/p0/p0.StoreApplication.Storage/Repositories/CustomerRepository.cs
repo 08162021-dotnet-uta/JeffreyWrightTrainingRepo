@@ -8,14 +8,17 @@ namespace p0.StoreApplication.Storage.Repositories
 {
   public class CustomerRepository : IRepository<Customer>
   {
-    private readonly string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Revature\dotnet-batch-2021-08-p0\StoreApplication\customers.xml";
-    private static readonly FileAdapter _fileAdapter = new();
+    private readonly List<Customer> customers;
+    //private readonly string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Revature\dotnet-batch-2021-08-p0\StoreApplication\customers.xml";
+    //private static readonly FileAdapter _fileAdapter = new();
     public CustomerRepository()
     {
-      if (_fileAdapter.ReadFromFile<Customer>(_path) == null)
+      customers = new List<Customer>
       {
-        _fileAdapter.WriteToFile<Customer>(_path, new List<Customer>());
-      }
+        new Customer() { Name = "Jeffrey Wright" },
+        new Customer() { Name = "Michael Wright" },
+        new Customer() { Name = "Catherine Wright" }
+      };
     }
     public bool Delete()
     {
@@ -24,13 +27,13 @@ namespace p0.StoreApplication.Storage.Repositories
 
     public bool Insert(Customer entry)
     {
-      _fileAdapter.WriteToFile<Customer>(_path, new List<Customer> { entry });
+      customers.Add(entry);
       return true;
     }
 
     public List<Customer> Select()
     {
-      return _fileAdapter.ReadFromFile<Customer>(_path);
+      return customers;
     }
 
     public Customer Update()

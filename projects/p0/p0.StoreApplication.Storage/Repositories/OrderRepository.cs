@@ -8,14 +8,12 @@ namespace p0.StoreApplication.Storage.Repositories
 {
   public class OrderRepository : IRepository<Order>
   {
-    private readonly string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Revature\dotnet-batch-2021-08-p0\StoreApplication\orders.xml";
-    private static readonly FileAdapter _fileAdapter = new();
+    private readonly List<Order> orders;
+    //private readonly string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Revature\dotnet-batch-2021-08-p0\StoreApplication\orders.xml";
+    //private static readonly FileAdapter _fileAdapter = new();
     public OrderRepository()
     {
-      if (_fileAdapter.ReadFromFile<Order>(_path) == null)
-      {
-        _fileAdapter.WriteToFile<Order>(_path, new List<Order>());
-      }
+      orders = new List<Order>(){};
     }
     public bool Delete()
     {
@@ -24,13 +22,13 @@ namespace p0.StoreApplication.Storage.Repositories
 
     public bool Insert(Order entry)
     {
-      _fileAdapter.WriteToFile<Order>(_path, new List<Order> { entry });
+      orders.Add(entry);
       return true;
     }
 
     public List<Order> Select()
     {
-      return _fileAdapter.ReadFromFile<Order>(_path);
+      return orders;
     }
 
     public Order Update()

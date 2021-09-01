@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using p0.StoreApplication.Domain.Models;
 
 namespace p0.StoreApplication.Storage.Adapters
 {
