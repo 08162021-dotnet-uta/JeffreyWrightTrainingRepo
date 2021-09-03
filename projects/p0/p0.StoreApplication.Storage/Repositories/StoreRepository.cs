@@ -1,7 +1,6 @@
 using p0.StoreApplication.Domain.Interfaces;
-using p0.StoreApplication.Domain.Abstracts;
-using p0.StoreApplication.Storage.Adapters;
 using p0.StoreApplication.Domain.Models;
+using p0.StoreApplication.Storage.Adapters;
 using System.Collections.Generic;
 using System;
 
@@ -16,12 +15,12 @@ namespace p0.StoreApplication.Storage.Repositories
     {
       stores = new List<Store>()
       {
-        new FurnitureStore(){ Name = "IKEA", State = "IN", City = "Fishers" },
-        new TechStore(){ Name = "Best Buy", State = "TX", City = "San Antonio" },
-        new MultimediaStore(){ Name = "Home Entertainment", State = "AZ", City = "Mesa" },
-        new TechStore(){ Name = "Smartphones and Gizmos", State = "CA", City = "Long Beach"},
-        new MultimediaStore(){ Name = "GameStop", State = "DC", City = "Washington"},
-        new FurnitureStore(){ Name = "Office Funiture", State = "UT", City = "Orem"}
+        new Store(){ Name = "IKEA", State = "IN", City = "Fishers" },
+        new Store(){ Name = "Best Buy", State = "IN", City = "Lafayette" },
+        new Store(){ Name = "Home Entertainment", State = "IN", City = "Indianapolis" },
+        new Store(){ Name = "Smartphone Accessories and Gizmos", State = "IN", City = "Fort Wayne"},
+        new Store(){ Name = "Walmart", State = "IN", City = "Lebanon"},
+        new Store(){ Name = "Office Depot", State = "IN", City = "Carmel"}
       };
     }
     public bool Delete()

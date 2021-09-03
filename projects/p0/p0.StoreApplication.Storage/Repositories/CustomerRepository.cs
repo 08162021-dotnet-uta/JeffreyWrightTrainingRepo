@@ -13,12 +13,8 @@ namespace p0.StoreApplication.Storage.Repositories
     //private static readonly FileAdapter _fileAdapter = new();
     public CustomerRepository()
     {
-      customers = new List<Customer>
-      {
-        new Customer() { Name = "Jeffrey Wright" },
-        new Customer() { Name = "Michael Wright" },
-        new Customer() { Name = "Catherine Wright" }
-      };
+      DataAdapter da = new();
+      customers = da.GetCustomers();
     }
     public bool Delete()
     {

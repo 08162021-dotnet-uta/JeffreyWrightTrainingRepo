@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <!--link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+  <script src='main.js'></script-->
+</head>
+
+<body>
+  <div>
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png"
+      width=200px>
+    <h1>About</h1>
+    <p>This website was written as part of an exercise</p>
+    <h2>Our Locations</h2>
+    <ul>
+      <li>USA</li>
+      <ul>
+        <li><a href="https://en.wikipedia.org/wiki/New_York_City">New York</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Columbus,_Ohio">Columbus</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Austin,_Texas">Austin</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Philadelphia">Philly</a></li>
+      </ul>
+      <li>World</li>
+      <ul>
+        <li><a href="https://en.wikipedia.org/wiki/Ottawa">Ottawa</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Sydney">Sydney</a></li>
+      </ul>
+    </ul>
+    <h2>Upcoming Classes</h2>
+    <table border=1>
+      <thead>
+        <th>Location</th>
+        <th>Topic</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>New York</td>
+          <td>JavaScript & jQuery</td>
+        </tr>
+        <tr>
+          <td>San Francisco</td>
+          <td>HTML & CSS</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h2>Sign up!</h2>
+    <form action="myFunction()">
+      <label for="name">Name: </label><input type="text" name="name"><br>
+      <label for="email">Email</label><input type="text" name="email"><br>
+      <label for="location">Location</label>
+      <select name="location" id="location">
+        <option value="new-york">New York</option>
+        <option value="san-francisco" selected>San Francisco</option>
+      </select><br>
+      Gender<br>
+      <input type="radio" name="radio" id="male"><label for="male">Male</label>
+      <input type="radio" name="radio" id="female"><label for="female">Female</label><br>
+    </form>
+  </div>
+</body>
+
+</html>

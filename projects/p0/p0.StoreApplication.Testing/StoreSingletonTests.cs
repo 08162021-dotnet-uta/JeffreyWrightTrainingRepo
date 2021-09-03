@@ -1,5 +1,8 @@
 using Xunit;
 using p0.StoreApplication.Client.Singletons;
+using System.Collections.Generic;
+using p0.StoreApplication.Storage.Adapters;
+using p0.StoreApplication.Domain.Models;
 
 namespace p0.StoreApplication.Testing
 {
@@ -16,6 +19,7 @@ namespace p0.StoreApplication.Testing
 
       // assert
       Assert.NotNull(actual);
+      //Assert.IsType(actual);
     }
   }
 }

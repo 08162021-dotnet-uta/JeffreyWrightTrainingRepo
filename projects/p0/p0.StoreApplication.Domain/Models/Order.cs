@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using p0.StoreApplication.Domain.Abstracts;
 
 namespace p0.StoreApplication.Domain.Models
 {

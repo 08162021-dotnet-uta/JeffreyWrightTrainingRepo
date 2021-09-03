@@ -8,7 +8,7 @@ namespace p0.StoreApplication.Domain.Models
   public class Product
   {
     [XmlAttribute("id")]
-    public int ProdcutId { get; set; }
+    public int ProductId { get; set; }
     [XmlElement("name")]
     public string Name { get; set; }
     [XmlElement("description")]

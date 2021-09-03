@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using p0.StoreApplication.Domain.Models;
-using p0.StoreApplication.Domain.Abstracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +20,15 @@ namespace p0.StoreApplication.Storage.Adapters
 
     public List<Customer> GetCustomers()
     {
-      return Customers.FromSqlRaw("select CUSTOMERNAME from Customer.Customer;").ToList();
+      try
+      {
+        return Customers.FromSqlRaw("select * from Customer.Customer").ToList();
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e);
+        return null;
+      }
     }
 
     public void SetCustomer()

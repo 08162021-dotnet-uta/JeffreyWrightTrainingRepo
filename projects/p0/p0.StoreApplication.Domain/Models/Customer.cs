@@ -5,15 +5,11 @@ using System.Xml.Serialization;
 namespace p0.StoreApplication.Domain.Models
 {
   [Serializable()]
-  [XmlRoot("customer")]
   public class Customer
   {
-    [XmlAttribute("id")]
-    public int CustomerId { get; set; }
-    [XmlElement("name")]
+    public short CustomerId { get; set; }
     public string Name { get; set; }
-    [XmlElement("orders")]
-    public List<Order> Orders { get; set; }
+    public List<Order> Orders { get; } = new List<Order>();
 
     public override string ToString()
     {

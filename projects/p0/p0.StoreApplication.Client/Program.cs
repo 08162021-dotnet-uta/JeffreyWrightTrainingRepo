@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using p0.StoreApplication.Domain.Abstracts;
 using p0.StoreApplication.Domain.Models;
 using p0.StoreApplication.Client.Singletons;
 using Serilog;
+using p0.StoreApplication.Storage.Adapters;
 
 namespace p0.StoreApplication.Client
 {
@@ -32,10 +32,12 @@ namespace p0.StoreApplication.Client
         Directory.CreateDirectory(_logPath.Substring(0, _logPath.LastIndexOf('\\')));
         File.CreateText(_logPath);
       }*/
-      Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+      /*Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
       var p = new Program();
-      Console.WriteLine("Welcome to The Store!");
-      p.DisplayMenu();
+      Console.WriteLine("Welcome to my storefront!");
+      p.DisplayMenu();*/
+      DataAdapter da = new DataAdapter();
+      List<Customer> customers = da.GetCustomers();
     }
     /// <summary>
     /// Displays the Menu
@@ -47,9 +49,8 @@ namespace p0.StoreApplication.Client
       Console.WriteLine("2: Select store");
       Console.WriteLine("3: Add products to cart");
       Console.WriteLine("4: View cart");
-      Console.WriteLine("5: View orders (customer)");
-      Console.WriteLine("6: View orders (store)");
-      Console.WriteLine("7: Log Out");
+      Console.WriteLine("5: View orders");
+      Console.WriteLine("6: Log Out");
       Console.Write("Select an option: ");
       try
       {
@@ -87,12 +88,9 @@ namespace p0.StoreApplication.Client
           OutputOrder<Order>(_orderSingleton.Orders, customer);
           break;
         case 6:
-          OutputOrder<Order>(_orderSingleton.Orders, store);
-          break;
-        case 7:
           break;
       }
-      if (option != 7)
+      if (option != 6)
         DisplayMenu();
     }
     /// <summary>
@@ -270,48 +268,15 @@ namespace p0.StoreApplication.Client
     private static void OutputOrder<Order>(List<Order> data, Customer customer)
     {
       Log.Information("Method: Output Order");
-      if(customer == null)
-      {
-        Console.WriteLine("ERROR: No customer selected");
-        return;
-      }
       if(data == null)
       {
-        Console.WriteLine($"There are no orders for {customer}.");
+        Console.WriteLine("There are no orders made.");
         return;
       }
 
       foreach (var item in data)
       {
         Console.WriteLine(item);
-      }
-      Console.WriteLine("");
-    }
-    /// <summary>
-    /// Output the list of orders based on the customer
-    /// </summary>
-    /// <typeparam name="Order"></typeparam>
-    /// <param name="data"></param>
-    private static void OutputOrder<Order>(List<Order> data, Store store)
-    {
-      Log.Information("Method: Output Order");
-      if (store == null)
-      {
-        Console.WriteLine("ERROR: No store selected");
-        return;
-      }
-      if (data == null)
-      {
-        Console.WriteLine($"There are no orders for {store}.");
-        return;
-      }
-
-      var i = 1;
-
-      foreach (var item in data)
-      {
-        Console.WriteLine(i + ": " + item);
-        i++;
       }
       Console.WriteLine("");
     }
