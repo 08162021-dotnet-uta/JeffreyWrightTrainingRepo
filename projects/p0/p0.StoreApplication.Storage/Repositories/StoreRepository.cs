@@ -13,15 +13,7 @@ namespace p0.StoreApplication.Storage.Repositories
     private readonly List<Store> stores;
     public StoreRepository()
     {
-      stores = new List<Store>()
-      {
-        new Store(){ Name = "IKEA", State = "IN", City = "Fishers" },
-        new Store(){ Name = "Best Buy", State = "IN", City = "Lafayette" },
-        new Store(){ Name = "Home Entertainment", State = "IN", City = "Indianapolis" },
-        new Store(){ Name = "Smartphone Accessories and Gizmos", State = "IN", City = "Fort Wayne"},
-        new Store(){ Name = "Walmart", State = "IN", City = "Lebanon"},
-        new Store(){ Name = "Office Depot", State = "IN", City = "Carmel"}
-      };
+      
     }
     public bool Delete()
     {

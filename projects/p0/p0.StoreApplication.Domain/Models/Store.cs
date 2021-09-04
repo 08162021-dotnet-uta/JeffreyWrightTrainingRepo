@@ -9,7 +9,7 @@ namespace p0.StoreApplication.Domain.Models
   [Serializable()]
   public class Store
   {
-    public int StoreId { get; set; }
+    public short StoreId { get; set; }
     public string Name { get; set; }
     public string City { get; set; }
     public string State { get; set; }

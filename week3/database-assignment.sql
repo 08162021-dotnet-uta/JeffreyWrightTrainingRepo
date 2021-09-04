@@ -1,5 +1,8 @@
 CREATE DATABASE Demo_08162021batch;
 
+USE Demo_08162021batch;
+GO
+
 --create an insert statement for one product
 CREATE TABLE Products(
 ProductId INT PRIMARY KEY IDENTITY,
@@ -18,17 +21,11 @@ CREATE TABLE ItemizedOrders(
 ItemizedId uniqueidentifier NOT NULL DEFAULT newid() PRIMARY KEY,
 OrderId uniqueidentifier NOT NULL DEFAULT newid(),
 CustomerId INT NOT NULL FOREIGN KEY REFERENCES Customers(CustomerId) ON DELETE CASCADE,
+ProductId INT NOT NULL FOREIGN KEY REFERENCES Products(ProductId) ON DELETE CASCADE,
 OrderDate date NOT NULL,
 totalAmount decimal(19,2) NOT NULL);
 
-CREATE TABLE OrderProducts(
-ItemizedId uniqueidentifier NOT NULL DEFAULT newid() PRIMARY KEY,
-OrderId uniqueidentifier NOT NULL FOREIGN KEY REFERENCES ItemizedOrders(ItemizedId),
-ProductId INT NOT NULL FOREIGN KEY REFERENCES Products(ProductId) ON DELETE CASCADE,
-);
-
 -- I will create a view to display any particular order and it's details.
-DROP TABLE ItemizedOrders;
 
 -- Create a customer
 INSERT INTO Customers
@@ -36,9 +33,11 @@ VALUES ('Jeffrey', 'Wright');
 
 -- Create 3 products
 INSERT INTO Products
-VALUES ('Lays Chips (3oz)', 'Potato chips in a bag', 1.99), ('Foster Farms Chicken Nuggets (Family Pack)', 'A bag of chicken nuggets. Perfect for young families.', 11.99), ('Mug Root Beer (1 L)', 'A 1 Liter Bottle of Root Beer', 2.99);
+VALUES ('Lays Chips (3oz)', 'Potato chips in a bag', 1.99);
 
-SELECT * FROM PRODUCTS;
-
-INSERT INTO ItemizedOrders
-VALUES(1, 1, 2, 3, GETDATE(), (SELECT ProductPrice FROM Products WHERE PRODUCTID = 1));
+INSERT INTO ItemizedOrders (orderid, customerid, productid, orderdate, totalAmount)
+VALUES ('74063857-e94e-4f3f-b365-f49c1b2121a6', 8, 20, GETDATE());
+INSERT INTO ItemizedOrders (orderid, customerid, productid, orderdate, totalAmount)
+VALUES ('74063857-e94e-4f3f-b365-f49c1b2121a6', 8, 6, GETDATE());
+INSERT INTO ItemizedOrders (orderid, customerid, productid, orderdate, totalAmount)
+VALUES ('74063857-e94e-4f3f-b365-f49c1b2121a6', 8, 21, GETDATE());

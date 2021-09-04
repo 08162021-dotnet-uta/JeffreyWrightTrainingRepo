@@ -9,12 +9,10 @@ namespace p0.StoreApplication.Storage.Repositories
   public class CustomerRepository : IRepository<Customer>
   {
     private readonly List<Customer> customers;
-    //private readonly string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Revature\dotnet-batch-2021-08-p0\StoreApplication\customers.xml";
-    //private static readonly FileAdapter _fileAdapter = new();
+    private static readonly DataAdapter _dataAdapter = new();
     public CustomerRepository()
     {
-      DataAdapter da = new();
-      customers = da.GetCustomers();
+      customers = _dataAdapter.GetCustomers();
     }
     public bool Delete()
     {

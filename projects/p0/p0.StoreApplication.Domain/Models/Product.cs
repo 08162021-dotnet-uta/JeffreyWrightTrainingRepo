@@ -4,16 +4,11 @@ using System.Xml.Serialization;
 namespace p0.StoreApplication.Domain.Models
 {
   [Serializable()]
-  [XmlRoot("prodcut")]
   public class Product
   {
-    [XmlAttribute("id")]
-    public int ProductId { get; set; }
-    [XmlElement("name")]
+    public short ProductId { get; set; }
     public string Name { get; set; }
-    [XmlElement("description")]
     public string Description { get; set; }
-    [XmlElement("price")]
     public decimal Price { get; set; }
     public override string ToString()
     {
