@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using p0.StoreApplication.Domain.Models;
 using p0.StoreApplication.Client.Singletons;
 using Serilog;
-using p0.StoreApplication.Storage.Adapters;
+using dm = p0.StoreApplication.Storage.Model;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace p0.StoreApplication.Client
 {
@@ -16,9 +17,9 @@ namespace p0.StoreApplication.Client
     private static readonly CustomerSingleton _customerSingleton = CustomerSingleton.Instance;
     private static readonly ProductSingleton _productSingleton = ProductSingleton.Instance;
     private static readonly OrderSingleton _orderSingleton = OrderSingleton.Instance;
-    protected Customer customer;
-    protected Store store;
-    private static readonly List<Product> cart = new();
+    protected dm.Customer customer;
+    protected dm.Store store;
+    private static readonly List<dm.Product> cart = new();
     //This references a path that will hold the logs. It is stored within the AppData\Roaming folder.
     //private static readonly string _logPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Revature\dotnet-batch-2021-08-p0\StoreApplication\log.txt";
     /// <summary>
@@ -32,12 +33,22 @@ namespace p0.StoreApplication.Client
         Directory.CreateDirectory(_logPath.Substring(0, _logPath.LastIndexOf('\\')));
         File.CreateText(_logPath);
       }*/
-      /*Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+      Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
       var p = new Program();
       Console.WriteLine("Welcome to my storefront!");
-      p.DisplayMenu();*/
-      DataAdapter da = new DataAdapter();
-      List<Customer> customers = da.GetCustomers();
+      p.DisplayMenu();
+      /*using (var context = new dm.StoreApplicationDBContext())
+      {
+        /*dm.Customer r = new dm.Customer();
+        r.Name = "Robert Smith";
+        context.Customers.Add(r);
+        context.SaveChanges();
+        var customerList = context.Customers.FromSqlRaw<dm.Customer>("SELECT * FROM Customer.Customer").ToList();
+        foreach (var customer in customerList)
+        {
+          Console.WriteLine(customer.Name);
+        }
+      }*/
     }
     /// <summary>
     /// Displays the Menu
@@ -45,20 +56,14 @@ namespace p0.StoreApplication.Client
     private void DisplayMenu()
     {
       Log.Information("Method: Display Menu");
-      Console.WriteLine("1: Select customer");
-      Console.WriteLine("2: Select store");
-      Console.WriteLine("3: Add products to cart");
-      Console.WriteLine("4: View cart");
-      Console.WriteLine("5: View orders");
-      Console.WriteLine("6: Log Out");
+      Console.WriteLine("1: Login as customer");
+      Console.WriteLine("2: Login as store");
+      Console.WriteLine("Any other key: Log Out");
       Console.Write("Select an option: ");
-      try
+      string value = Console.ReadLine();
+      if(value.Equals("1") || value.Equals("2"))
       {
-        Menu(int.Parse(Console.ReadLine()));
-      }
-      catch (Exception e)
-      {
-        Console.WriteLine($"Generic Exception Handler: {e}");
+        Menu(int.Parse(value));
       }
     }
     /// <summary>
@@ -70,22 +75,22 @@ namespace p0.StoreApplication.Client
       switch (option)
       {
         case 1:
-          Output<Customer>(_customerSingleton.Customers);
+          Output<dm.Customer>(_customerSingleton.Customers);
           SelectCustomer(out customer);
+          Console.WriteLine($"You have selected {customer}");
+          DisplayMenuCust();
           break;
         case 2:
-          Output<Store>(_storeSingleton.Stores);
+          Output<dm.Store>(_storeSingleton.Stores);
           SelectStore(out store);
+          DisplayMenuStore();
           break;
         case 3:
-          Output<Product>(_productSingleton.Products);
+          Output<dm.Product>(_productSingleton.Products);
           cart.Add(SelectProduct());
           break;
         case 4:
           ViewCart();
-          break;
-        case 5:
-          OutputOrder<Order>(_orderSingleton.Orders, customer);
           break;
         case 6:
           break;
@@ -115,7 +120,7 @@ namespace p0.StoreApplication.Client
     /// </summary>
     /// <param name="customer"></param>
     /// <returns></returns>
-    private void SelectCustomer(out Customer customer)
+    private void SelectCustomer(out dm.Customer customer)
     {
       Log.Information("Method: Select Customer");
 
@@ -126,10 +131,7 @@ namespace p0.StoreApplication.Client
       Console.Write("Select a Customer: ");
 
       //Prompt for user input to get a customer
-      Customer cust = customers[int.Parse(Console.ReadLine()) - 1];
-
-      //Displays the customer selected
-      Console.WriteLine(cust);
+      dm.Customer cust = customers[int.Parse(Console.ReadLine()) - 1];
 
       //Return the customer of the customer input
       customer = cust;
@@ -139,7 +141,7 @@ namespace p0.StoreApplication.Client
     /// </summary>
     /// <param name="store"></param>
     /// <returns></returns>
-    private void SelectStore(out Store store)
+    private void SelectStore(out dm.Store store)
     {
       Log.Information("Method: Select Store");
 
@@ -150,7 +152,7 @@ namespace p0.StoreApplication.Client
       Console.Write("Select a Store: ");
 
       //Prompt for user input to get a store
-      Store st = stores[int.Parse(Console.ReadLine()) - 1];
+      dm.Store st = stores[int.Parse(Console.ReadLine()) - 1];
 
       //Displays the customer selected
       Console.WriteLine(st);
@@ -159,10 +161,92 @@ namespace p0.StoreApplication.Client
       store = st;
     }
     /// <summary>
+    /// Displays the menu for the customer
+    /// </summary>
+    private void DisplayMenuCust()
+    {
+      Log.Information("Method: Display Customer Menu");
+      Console.WriteLine("1: Select store");
+      Console.WriteLine("2: View orders");
+      Console.WriteLine("3: Log out");
+      Console.Write("Select an option: ");
+      string value = Console.ReadLine();
+      if (value.Equals("1") || value.Equals("2") || value.Equals("3"))
+      {
+        MenuCust(int.Parse(value));
+      }
+    }
+    private void MenuCust(int option)
+    {
+      switch (option)
+      {
+        case 1:
+          Output<dm.Store>(_storeSingleton.Stores);
+          SelectStore(out store);
+          DisplayShopping();
+          break;
+        case 2:
+          OutputOrder<dm.StoreOrder>(customer);
+          DisplayMenuStore();
+          break;
+        case 3:
+          customer = null;
+          break;
+      }
+    }
+    private void DisplayMenuStore()
+    {
+      Log.Information("Method: Display Customer Menu");
+      Console.WriteLine("1: View orders");
+      Console.WriteLine("2: Log out");
+      Console.Write("Select an option: ");
+      string value = Console.ReadLine();
+      if (value.Equals("1") || value.Equals("2"))
+      {
+        MenuStore(int.Parse(value));
+      }
+    }
+    private void MenuStore(int option)
+    {
+      switch (option)
+      {
+        case 1:
+          OutputOrder<dm.StoreOrder>(store);
+          DisplayMenuStore();
+          break;
+        case 2:
+          store = null;
+          break;
+      }
+    }
+    private void DisplayShopping()
+    {
+      Log.Information("Method: Display Customer Menu");
+      Console.WriteLine("1: Add products to cart");
+      Console.WriteLine("2: View cart");
+      Console.WriteLine("3: Leave store and empty cart");
+      Console.Write("Select an option: ");
+      string value = Console.ReadLine();
+      if (value.Equals("1") || value.Equals("2") || value.Equals("3"))
+      {
+        MenuShopping(int.Parse(value));
+      }
+    }
+    private void MenuShopping(int option)
+    {
+      switch(option)
+      {
+        case 1:
+          Output<dm.Product>(_productSingleton.Products);
+          cart.Add(SelectProduct());
+          break;
+      }
+    }
+    /// <summary>
     /// Selects a product and adds it to the cart
     /// </summary>
     /// <returns></returns>
-    private Product SelectProduct()
+    private dm.Product SelectProduct()
     {
       Log.Information("Method: Select Product");
 
@@ -173,7 +257,7 @@ namespace p0.StoreApplication.Client
       Console.Write("Select a Product: ");
 
       //Return the product of the user input
-      Product product = products[int.Parse(Console.ReadLine()) - 1];
+      dm.Product product = products[int.Parse(Console.ReadLine()) - 1];
 
       Console.WriteLine(product);
 
@@ -192,12 +276,12 @@ namespace p0.StoreApplication.Client
         subtotal += cart[i].Price;
       }
       Console.WriteLine($"Subtotal: ${subtotal}");
-      DisplayCartMenu();
+      DisplayCartMenu(subtotal);
     }
     /// <summary>
     /// Displays the cart menu
     /// </summary>
-    private void DisplayCartMenu()
+    private void DisplayCartMenu(decimal subtotal)
     {
       Log.Information("Method: Display Cart Menu");
       Console.WriteLine("1: Empty cart");
@@ -206,7 +290,7 @@ namespace p0.StoreApplication.Client
       Console.Write("Select an option: ");
       try
       {
-        CartMenu(int.Parse(Console.ReadLine()));
+        CartMenu(int.Parse(Console.ReadLine()), subtotal);
       }
       catch (Exception e)
       {
@@ -216,7 +300,7 @@ namespace p0.StoreApplication.Client
     /// <summary>
     /// Selects the option in the cart menu
     /// </summary>
-    private void CartMenu(int option)
+    private void CartMenu(int option, decimal subtotal)
     {
       Log.Information("Method: Cart Menu");
       switch (option)
@@ -226,7 +310,7 @@ namespace p0.StoreApplication.Client
           cart.Clear();
           break;
         case 2:
-          MakeOrder();
+          MakeOrder(subtotal);
           break;
         case 3:
           break;
@@ -235,7 +319,7 @@ namespace p0.StoreApplication.Client
     /// <summary>
     /// Creates a new order
     /// </summary>
-    private void MakeOrder()
+    private void MakeOrder(decimal subtotal)
     {
       Log.Information("Method: Make Order");
       if (customer == null)
@@ -253,9 +337,15 @@ namespace p0.StoreApplication.Client
         Console.WriteLine("ERROR: Cart is empty");
         return;
       }
+      else if (subtotal > 500)
+      {
+        Console.WriteLine("Sorry, this order is invalid. Orders are limited to a total of $500.");
+        return;
+      }
       else
       {
-        _orderSingleton.Add(new Order() { Customer = customer, Store = store, Products = new List<Product>(cart), OrderDate = DateTime.Now });
+        //will ned to change a lot og things here
+        //_orderSingleton.Add(new dm.Order() { Customer = customer, Store = store, Products = new List<dm.Product>(cart), OrderDate = DateTime.Now });
         Console.WriteLine("Your order has been processed. Have a nice day!");
       }
       cart.Clear();
@@ -265,12 +355,35 @@ namespace p0.StoreApplication.Client
     /// </summary>
     /// <typeparam name="Order"></typeparam>
     /// <param name="data"></param>
-    private static void OutputOrder<Order>(List<Order> data, Customer customer)
+    private static void OutputOrder<Order>(dm.Customer customer)
     {
-      Log.Information("Method: Output Order");
-      if(data == null)
+      Log.Information("Method: Output Order (Customer)");
+      var data = _orderSingleton.QueryOrders(customer);
+      if (data == null)
       {
         Console.WriteLine("There are no orders made.");
+        return;
+      }
+
+      foreach (var item in data)
+      {
+        Console.WriteLine(item);
+      }
+      Console.WriteLine("");
+    }
+
+    /// <summary>
+    /// Output the list of orders based on the store
+    /// </summary>
+    /// <typeparam name="StoreOrder"></typeparam>
+    /// <param name="store"></param>
+    private static void OutputOrder<StoreOrder>(dm.Store store)
+    {
+      Log.Information("Method: Output Order (Store)");
+      var data = _orderSingleton.QueryOrders(store);
+      if (data.Count == 0)
+      {
+        Console.WriteLine($"There are no orders made at {store}.");
         return;
       }
 

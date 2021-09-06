@@ -1,5 +1,5 @@
 using p0.StoreApplication.Domain.Interfaces;
-using p0.StoreApplication.Domain.Models;
+using p0.StoreApplication.Storage.Model;
 using p0.StoreApplication.Storage.Adapters;
 using System.Collections.Generic;
 using System;

@@ -10,10 +10,19 @@ FROM Store.StoreOrder;
 SELECT *
 FROM Store.Store;
 
+SELECT *
+FROM Store.Product;
+
+SELECT *
+FROM Store.StoreOrder;
+
+SELECT *
+FROM Store.OrderProduct;
+
 INSERT INTO Customer.Customer ([Name])
 VALUES ('Jeffrey Wright'), ('Michael Wright'), ('Catherine Wright'), ('Kyle Hill'), ('Ultimate Man');
 
-INSERT INTO Store.Store ([Name], City, [State])
+/*INSERT INTO Store.Store ([Name], City, [State])
 VALUES ('Best Buy', 'Lafayette', 'IN'), ('IKEA', 'Fishers', 'IN'), ('GameStop', 'Indianapolis', 'IN');
 
 INSERT INTO Store.Product ([Name], [Description], Price)
@@ -42,7 +51,7 @@ VALUES((SELECT StoreId FROM Store.Store WHERE [Name] = 'Best Buy'), (SELECT Prod
 ((SELECT StoreId FROM Store.Store WHERE [Name] = 'IKEA'), (SELECT ProductId FROM Store.Product WHERE [Name] = 'Huvudroll')),
 ((SELECT StoreId FROM Store.Store WHERE [Name] = 'GameStop'), (SELECT ProductId FROM Store.Product WHERE [Name] = 'Mario Kart 8 Deluxe')),
 ((SELECT StoreId FROM Store.Store WHERE [Name] = 'GameStop'), (SELECT ProductId FROM Store.Product WHERE [Name] = 'Nintendo Switch Lite')),
-((SELECT StoreId FROM Store.Store WHERE [Name] = 'GameStop'), (SELECT ProductId FROM Store.Product WHERE [Name] = 'Pikachu Plush'));
+((SELECT StoreId FROM Store.Store WHERE [Name] = 'GameStop'), (SELECT ProductId FROM Store.Product WHERE [Name] = 'Pikachu Plush'));*/
 
 --Query Example
 SELECT s.[Name] AS StoreName, p.[Name] as ProductName
@@ -51,29 +60,37 @@ INNER JOIN Store.StoreInventory AS si ON si.StoreId = s.StoreId
 RIGHT JOIN Store.Product AS p ON si.ProductId = p.ProductId --Right join purpose: All prouct records have a product id.
 WHERE p.Price = (SELECT MAX(Price) from Store.Product);
 
-INSERT INTO Store.StoreOrder (CustomerId, StoreId, OrderDate)
+--Query Example 2
+SELECT o.OrderId, s.[Name] AS StoreName, c.[Name] AS CustomerName, o.OrderDate
+FROM Store.StoreOrder AS o
+INNER JOIN Customer.Customer AS c ON o.CustomerId = c.CustomerId
+INNER JOIN Store.Store AS s ON o.StoreId = s.StoreId
+WHERE s.[Name] = 'Best Buy';
+
+SELECT p.[Name] AS ProductName, op.Quantity, p.Price
+FROM Store.OrderProduct AS op
+INNER JOIN Store.Product AS p ON op.ProductId = p.ProductId
+WHERE op.OrderID IN (SELECT o.OrderID FROM Store.StoreOrder AS o INNER JOIN Store.Store AS s ON o.StoreId = s.StoreId WHERE s.[Name] = 'Best Buy');
+
+--Making an order (part 1)
+/*INSERT INTO Store.StoreOrder (CustomerId, StoreId, OrderDate)
 VALUES(
 (SELECT CustomerId FROM Customer.Customer WHERE [Name] = 'Ultimate Man'),
 (SELECT StoreId FROM Store.Store WHERE [Name] = 'Best Buy'),
 GETDATE());
 
-INSERT INTO Store.OrderProduct (OrderId, ProductId)
+--Making an order (part 2)
+INSERT INTO Store.OrderProduct (OrderId, ProductId, Quantity)
 VALUES(
 (SELECT OrderId FROM Store.StoreOrder WHERE OrderId = (SELECT MAX(OrderId) FROM Store.StoreOrder)),
-(SELECT ProductId FROM Store.Product WHERE [Name] = 'Bluetooth Speaker')
+(SELECT ProductId FROM Store.Product WHERE [Name] = 'Bluetooth Speaker'), 2
 );
 
-INSERT INTO Store.OrderProduct (OrderId, ProductId)
+INSERT INTO Store.OrderProduct (OrderId, ProductId, Quantity)
 VALUES(
 (SELECT OrderId FROM Store.StoreOrder WHERE OrderId = (SELECT MAX(OrderId) FROM Store.StoreOrder)),
-(SELECT ProductId FROM Store.Product WHERE [Name] = 'Bluetooth Speaker')
-);
+(SELECT ProductID FROM Store.Product WHERE [Name] = 'Lightning Cable'), 1
+);*/
 
-INSERT INTO Store.OrderProduct (OrderId, ProductId)
-VALUES(
-(SELECT OrderId FROM Store.StoreOrder WHERE OrderId = (SELECT MAX(OrderId) FROM Store.StoreOrder)),
-(SELECT ProductID FROM Store.Product WHERE [Name] = 'Lightning Cable')
-);
-
-SELECT [Name]
-FROM Customer.Customer;
+SELECT *
+FROM Store.OrderProduct;

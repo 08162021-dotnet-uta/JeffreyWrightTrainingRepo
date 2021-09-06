@@ -29,7 +29,6 @@ CREATE TABLE Customer.Customer
 (
 	CustomerId SMALLINT PRIMARY KEY IDENTITY(1,1),
 	[Name] VARCHAR(100) NOT NULL,
-	ACTIVE BIT NOT NULL,
 );
 
 CREATE TABLE Store.Store
@@ -38,7 +37,6 @@ CREATE TABLE Store.Store
 	[Name] VARCHAR(100) NOT NULL,
 	City VARCHAR (100),
 	[State] CHAR(2),
-	ACTIVE BIT NOT NULL,
 );
 
 CREATE TABLE Store.Product
@@ -47,7 +45,6 @@ CREATE TABLE Store.Product
 	[Name] VARCHAR(100) NOT NULL,
 	[Description] VARCHAR(255),
 	Price MONEY NOT NULL,
-	ACTIVE BIT NOT NULL,
 );
 
 CREATE TABLE Store.StoreOrder
@@ -56,21 +53,21 @@ CREATE TABLE Store.StoreOrder
 	CustomerId SMALLINT NOT NULL,
 	StoreId SMALLINT NOT NULL,
 	OrderDate DATETIME2 NOT NULL,
-	ACTIVE BIT NOT NULL,
 );
 
 CREATE TABLE Store.OrderProduct
 (
+	OrderProductId INT PRIMARY KEY IDENTITY(1,1),
 	OrderId SMALLINT NOT NULL,
 	ProductId SMALLINT NOT NULL,
-	ACTIVE BIT NOT NULL
+	Quantity SMALLINT NOT NULL,
 );
 
 CREATE TABLE Store.StoreInventory
 (
+	StoreInventoryId INT PRIMARY KEY IDENTITY(1,1),
 	StoreId SMALLINT NOT NULL,
 	ProductId SMALLINT NOT NULL,
-	ACTIVE BIT NOT NULL
 );
 GO
 
@@ -95,25 +92,6 @@ ADD CONSTRAINT FK_INVENTORY_STORE FOREIGN KEY (StoreId) REFERENCES Store.Store(S
 
 ALTER TABLE Store.StoreInventory
 ADD CONSTRAINT FK_INVENTORY_PRODUCT FOREIGN KEY (ProductId) REFERENCES Store.Product(ProductId);
-
---Default Active
-ALTER TABLE Customer.Customer
-ADD CONSTRAINT DF_Customer default (1) for Active;
-
-ALTER TABLE Store.Store
-ADD CONSTRAINT DF_Store default (1) for Active;
-
-ALTER TABLE Store.StoreOrder
-ADD CONSTRAINT DF_Order default (1) for Active;
-
-ALTER TABLE Store.OrderProduct
-ADD CONSTRAINT DF_OrderProduct default (1) for Active;
-
-ALTER TABLE Store.Product
-ADD CONSTRAINT DF_Product default (1) for Active;
-
-ALTER TABLE Store.StoreInventory
-ADD CONSTRAINT DF_Inventory default (1) for Active;
 
 --Date Constraint
 ALTER TABLE Store.StoreOrder

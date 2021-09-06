@@ -1,8 +1,9 @@
 using p0.StoreApplication.Domain.Interfaces;
-using p0.StoreApplication.Domain.Models;
-using p0.StoreApplication.Storage.Adapters;
+using p0.StoreApplication.Storage.Model;
 using System.Collections.Generic;
 using System;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace p0.StoreApplication.Storage.Repositories
 {
@@ -13,7 +14,10 @@ namespace p0.StoreApplication.Storage.Repositories
     private readonly List<Store> stores;
     public StoreRepository()
     {
-      
+      using (var context = new StoreApplicationDBContext())
+      {
+        stores = context.Stores.FromSqlRaw<Store>("SELECT * FROM Store.Store").ToList();
+      }
     }
     public bool Delete()
     {

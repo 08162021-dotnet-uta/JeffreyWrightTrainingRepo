@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using p0.StoreApplication.Domain.Models;
+﻿using System;
+using System.Collections.Generic;
+using p0.StoreApplication.Storage.Model;
 using p0.StoreApplication.Storage.Repositories;
 
 namespace p0.StoreApplication.Client.Singletons
@@ -8,7 +9,7 @@ namespace p0.StoreApplication.Client.Singletons
   {
     private static OrderSingleton _orderSingleton;
     private static readonly OrderRepository _orderRepo = new();
-    public List<Order> Orders { get; private set; }
+    public List<StoreOrder> Orders { get; private set; }
     public static OrderSingleton Instance
     {
       get
@@ -26,10 +27,20 @@ namespace p0.StoreApplication.Client.Singletons
       Orders = _orderRepo.Select();
     }
 
-    public void Add(Order order)
+    public void Add(StoreOrder order)
     {
       _orderRepo.Insert(order);
       Orders = _orderRepo.Select();
+    }
+
+    public List<StoreOrder> QueryOrders(Store store)
+    {
+      return _orderRepo.Select(store);
+    }
+
+    public List<StoreOrder> QueryOrders(Customer customer)
+    {
+      return _orderRepo.Select(customer);
     }
   }
 }

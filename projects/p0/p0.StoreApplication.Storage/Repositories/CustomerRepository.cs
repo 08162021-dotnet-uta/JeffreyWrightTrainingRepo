@@ -1,8 +1,10 @@
-using p0.StoreApplication.Domain.Interfaces;
-using p0.StoreApplication.Domain.Models;
+using p0.StoreApplication.Storage.Model;
 using p0.StoreApplication.Storage.Adapters;
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using p0.StoreApplication.Domain.Interfaces;
 
 namespace p0.StoreApplication.Storage.Repositories
 {
@@ -12,7 +14,10 @@ namespace p0.StoreApplication.Storage.Repositories
     private static readonly DataAdapter _dataAdapter = new();
     public CustomerRepository()
     {
-      customers = _dataAdapter.GetCustomers();
+      using (var context = new StoreApplicationDBContext())
+      {
+        customers = context.Customers.FromSqlRaw<Customer>("SELECT * FROM Customer.Customer").ToList();
+      }
     }
     public bool Delete()
     {
