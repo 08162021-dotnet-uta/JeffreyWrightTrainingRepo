@@ -11,12 +11,7 @@ namespace p0.StoreApplication.Testing
 {
   public class ProgramTests
   {
-    /* I want to add three tests:
-     * 1: If the inventory is too much, reject order.
-     * 2: If the price is too much, reject order.
-     * 3: If the inventory and price are just under the limits, accept order
-    */
-    Program sut = new();
+    readonly Program sut = new();
 
     [Theory]
     [InlineData(19.99, 39.99, 59.98)]
@@ -30,7 +25,7 @@ namespace p0.StoreApplication.Testing
       Product q = new() { Price = price2 };
       cart.Add(p);
       cart.Add(q);
-      decimal sum = sut.calculateSubtotal(cart);
+      decimal sum = sut.CalculateSubtotal(cart);
       Assert.True(sum == total);
     }
 
@@ -63,15 +58,17 @@ namespace p0.StoreApplication.Testing
       string result = sut.MakeOrder(customer, store, cart);
       Assert.True(result.Equals("ERROR: No customer selected"));
     }
+
     [Fact]
     public void Test_MakeOrderNullStore()
     {
-      Customer customer = new Customer();
+      Customer customer = new();
       Store store = null;
       List<Product> cart = new();
       string result = sut.MakeOrder(customer, store, cart);
       Assert.True(result.Equals("ERROR: No store selected"));
     }
+
     [Fact]
     public void Test_MakeOrderEmptyCart()
     {

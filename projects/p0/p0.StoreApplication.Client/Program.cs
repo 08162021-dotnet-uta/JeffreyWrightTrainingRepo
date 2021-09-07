@@ -78,8 +78,7 @@ namespace p0.StoreApplication.Client
     public bool ValidateData(int options, string value)
     {
       Log.Information("Method: Validate Data");
-      int option;
-      if (int.TryParse(value, out option))
+      if (int.TryParse(value, out int option))
       {
         if (option > 0 && option <= options)
         {
@@ -378,14 +377,14 @@ namespace p0.StoreApplication.Client
       Log.Information("Method: View Cart");
       foreach (dm.Product p in cart)
         Console.WriteLine(p);
-      Console.WriteLine($"Subtotal: ${String.Format("{0:0.00}", calculateSubtotal(cart))}");
+      Console.WriteLine($"Subtotal: ${String.Format("{0:0.00}", CalculateSubtotal(cart))}");
       DisplayCartMenu();
     }
     /// <summary>
     /// Calculates the subtotal based on the cart
     /// </summary>
     /// <returns>Subtotal decimal value</returns>
-    public decimal calculateSubtotal(List<dm.Product> productCart)
+    public decimal CalculateSubtotal(List<dm.Product> productCart)
     {
       Log.Information("Method: Calculate subtotal");
       decimal subtotal = 0.00M;
@@ -449,8 +448,8 @@ namespace p0.StoreApplication.Client
     /// </summary>
     public string MakeOrder(dm.Customer cu, dm.Store st, List<dm.Product> ca)
     {
-      string outputString = "";
       Log.Information("Method: Make Order");
+      string outputString;
       if (cu == null)
       {
         outputString = "ERROR: No customer selected";
@@ -469,11 +468,11 @@ namespace p0.StoreApplication.Client
         Console.WriteLine(outputString);
         return outputString;
       }
-      else if(ca.Count > 50)
+      else if (ca.Count > 50)
       {
         outputString = "Sorry, this order is invalid. You cannot order more than 50 products in one order.";
       }
-      else if (calculateSubtotal(ca) > 500)
+      else if (CalculateSubtotal(ca) > 500)
       {
         outputString = "Sorry, this order is invalid. Orders are limited to a total of $500.";
       }
