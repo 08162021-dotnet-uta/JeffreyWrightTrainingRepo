@@ -1,4 +1,4 @@
-using p0.StoreApplication.Storage.Model;
+using p0.StoreApplication.Domain.Models;
 using p0.StoreApplication.Storage.Adapters;
 using System;
 using System.Collections.Generic;
@@ -11,13 +11,10 @@ namespace p0.StoreApplication.Storage.Repositories
   public class CustomerRepository : IRepository<Customer>
   {
     private readonly List<Customer> customers;
-    private static readonly DataAdapter _dataAdapter = new();
     public CustomerRepository()
     {
-      using (var context = new StoreApplicationDBContext())
-      {
-        customers = context.Customers.FromSqlRaw<Customer>("SELECT * FROM Customer.Customer").ToList();
-      }
+      using var context = new StoreApplicationDBContext();
+      customers = context.Customers.FromSqlRaw<Customer>("SELECT * FROM Customer.Customer").ToList();
     }
     public bool Delete()
     {
@@ -35,7 +32,13 @@ namespace p0.StoreApplication.Storage.Repositories
       return customers;
     }
 
-    public Customer Update()
+    public Customer Select(short id)
+    {
+      using var context = new StoreApplicationDBContext();
+      return context.Customers.FromSqlRaw<Customer>($"SELECT * FROM Customer.Customer WHERE CustomerId = {id}").FirstOrDefault();
+    }
+
+    public bool Update()
     {
       throw new System.NotImplementedException();
     }

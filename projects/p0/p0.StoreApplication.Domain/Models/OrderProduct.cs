@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace p0.StoreApplication.Storage.Model
+namespace p0.StoreApplication.Domain.Models
 {
     public partial class OrderProduct
     {

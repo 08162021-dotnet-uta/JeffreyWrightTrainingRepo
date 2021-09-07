@@ -19,10 +19,10 @@ FROM Store.StoreOrder;
 SELECT *
 FROM Store.OrderProduct;
 
-INSERT INTO Customer.Customer ([Name])
+/*INSERT INTO Customer.Customer ([Name])
 VALUES ('Jeffrey Wright'), ('Michael Wright'), ('Catherine Wright'), ('Kyle Hill'), ('Ultimate Man');
 
-/*INSERT INTO Store.Store ([Name], City, [State])
+INSERT INTO Store.Store ([Name], City, [State])
 VALUES ('Best Buy', 'Lafayette', 'IN'), ('IKEA', 'Fishers', 'IN'), ('GameStop', 'Indianapolis', 'IN');
 
 INSERT INTO Store.Product ([Name], [Description], Price)
@@ -51,7 +51,27 @@ VALUES((SELECT StoreId FROM Store.Store WHERE [Name] = 'Best Buy'), (SELECT Prod
 ((SELECT StoreId FROM Store.Store WHERE [Name] = 'IKEA'), (SELECT ProductId FROM Store.Product WHERE [Name] = 'Huvudroll')),
 ((SELECT StoreId FROM Store.Store WHERE [Name] = 'GameStop'), (SELECT ProductId FROM Store.Product WHERE [Name] = 'Mario Kart 8 Deluxe')),
 ((SELECT StoreId FROM Store.Store WHERE [Name] = 'GameStop'), (SELECT ProductId FROM Store.Product WHERE [Name] = 'Nintendo Switch Lite')),
-((SELECT StoreId FROM Store.Store WHERE [Name] = 'GameStop'), (SELECT ProductId FROM Store.Product WHERE [Name] = 'Pikachu Plush'));*/
+((SELECT StoreId FROM Store.Store WHERE [Name] = 'GameStop'), (SELECT ProductId FROM Store.Product WHERE [Name] = 'Pikachu Plush'));
+
+--Making an order (part 1)
+INSERT INTO Store.StoreOrder (CustomerId, StoreId, OrderDate)
+VALUES(
+(SELECT CustomerId FROM Customer.Customer WHERE [Name] = 'Ultimate Man'),
+(SELECT StoreId FROM Store.Store WHERE [Name] = 'Best Buy'),
+GETDATE());
+
+--Making an order (part 2)
+INSERT INTO Store.OrderProduct (OrderId, ProductId, Quantity)
+VALUES(
+(SELECT OrderId FROM Store.StoreOrder WHERE OrderId = (SELECT MAX(OrderId) FROM Store.StoreOrder)),
+(SELECT ProductId FROM Store.Product WHERE [Name] = 'Bluetooth Speaker'), 2
+);
+
+INSERT INTO Store.OrderProduct (OrderId, ProductId, Quantity)
+VALUES(
+(SELECT OrderId FROM Store.StoreOrder WHERE OrderId = (SELECT MAX(OrderId) FROM Store.StoreOrder)),
+(SELECT ProductID FROM Store.Product WHERE [Name] = 'Lightning Cable'), 1
+);*/
 
 --Query Example
 SELECT s.[Name] AS StoreName, p.[Name] as ProductName
@@ -72,25 +92,12 @@ FROM Store.OrderProduct AS op
 INNER JOIN Store.Product AS p ON op.ProductId = p.ProductId
 WHERE op.OrderID IN (SELECT o.OrderID FROM Store.StoreOrder AS o INNER JOIN Store.Store AS s ON o.StoreId = s.StoreId WHERE s.[Name] = 'Best Buy');
 
---Making an order (part 1)
-/*INSERT INTO Store.StoreOrder (CustomerId, StoreId, OrderDate)
-VALUES(
-(SELECT CustomerId FROM Customer.Customer WHERE [Name] = 'Ultimate Man'),
-(SELECT StoreId FROM Store.Store WHERE [Name] = 'Best Buy'),
-GETDATE());
-
---Making an order (part 2)
-INSERT INTO Store.OrderProduct (OrderId, ProductId, Quantity)
-VALUES(
-(SELECT OrderId FROM Store.StoreOrder WHERE OrderId = (SELECT MAX(OrderId) FROM Store.StoreOrder)),
-(SELECT ProductId FROM Store.Product WHERE [Name] = 'Bluetooth Speaker'), 2
-);
-
-INSERT INTO Store.OrderProduct (OrderId, ProductId, Quantity)
-VALUES(
-(SELECT OrderId FROM Store.StoreOrder WHERE OrderId = (SELECT MAX(OrderId) FROM Store.StoreOrder)),
-(SELECT ProductID FROM Store.Product WHERE [Name] = 'Lightning Cable'), 1
-);*/
-
 SELECT *
 FROM Store.OrderProduct;
+
+SELECT * FROM Store.OrderProduct WHERE ProductId = 1 AND OrderId = 1;
+
+DELETE FROM Store.StoreOrder WHERE OrderId NOT IN (SELECT OrderId FROM Store.OrderProduct)
+
+TRUNCATE TABLE Store.OrderProduct;
+DELETE FROM Store.StoreOrder;

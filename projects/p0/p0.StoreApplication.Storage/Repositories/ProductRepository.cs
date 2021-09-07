@@ -1,8 +1,10 @@
 using p0.StoreApplication.Domain.Interfaces;
-using p0.StoreApplication.Storage.Model;
+using p0.StoreApplication.Domain.Models;
 using p0.StoreApplication.Storage.Adapters;
 using System.Collections.Generic;
 using System;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace p0.StoreApplication.Storage.Repositories
 {
@@ -11,10 +13,10 @@ namespace p0.StoreApplication.Storage.Repositories
     private readonly List<Product> products;
     //private readonly string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Revature\dotnet-batch-2021-08-p0\StoreApplication\products.xml";
     //private static readonly FileAdapter _fileAdapter = new();
-    private static readonly DataAdapter _dataAdapter = new();
     public ProductRepository()
     {
-      
+      using var context = new StoreApplicationDBContext();
+      products = context.Products.FromSqlRaw<Product>("SELECT * FROM Store.Product").ToList();
     }
     public bool Delete()
     {
@@ -32,7 +34,19 @@ namespace p0.StoreApplication.Storage.Repositories
       return products;
     }
 
-    public Product Update()
+    public List<Product> Select(Store store)
+    {
+      using var context = new StoreApplicationDBContext();
+      return context.Products.FromSqlRaw<Product>($"SELECT * FROM Store.Product WHERE ProductId IN (SELECT ProductId from Store.StoreInventory WHERE StoreId = {store.StoreId})").ToList();
+    }
+
+    public List<Product> Select(StoreOrder order)
+    {
+      using var context = new StoreApplicationDBContext();
+      return context.Products.FromSqlRaw<Product>($"SELECT p.ProductId, [Name], [Description], Price, Quantity FROM Store.Product AS p RIGHT JOIN Store.OrderProduct AS op ON p.ProductId = op.ProductId WHERE OrderId = {order.OrderId}").ToList();
+    }
+
+    public bool Update()
     {
       throw new System.NotImplementedException();
     }

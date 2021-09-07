@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using p0.StoreApplication.Storage.Model;
+using p0.StoreApplication.Domain.Models;
 using p0.StoreApplication.Storage.Repositories;
 
 namespace p0.StoreApplication.Client.Singletons
@@ -30,6 +30,10 @@ namespace p0.StoreApplication.Client.Singletons
     {
       _storeRepo.Insert(store);
       Stores = _storeRepo.Select();
+    }
+    public Store GetStore(short id)
+    {
+      return _storeRepo.Select(id);
     }
   }
 }

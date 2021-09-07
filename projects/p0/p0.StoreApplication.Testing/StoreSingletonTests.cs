@@ -8,7 +8,7 @@ namespace p0.StoreApplication.Testing
 {
   public class StoreSingletonTests
   {
-    [Fact]
+    /*[Fact]
     public void Test_StoreCollection()
     {
       // arrange = instance of the entity to test
@@ -19,7 +19,15 @@ namespace p0.StoreApplication.Testing
 
       // assert
       Assert.NotNull(actual);
-      //Assert.IsType(actual);
     }
+    [Fact]
+    public void Test_StoreUpdate()
+    {
+      var sut = StoreSingleton.Instance;
+
+      var actual = sut.Stores;
+
+      Assert.True(actual.Count == 3);
+    }*/
   }
 }

@@ -1,5 +1,5 @@
 ﻿using p0.StoreApplication.Domain.Interfaces;
-using p0.StoreApplication.Storage.Model;
+using p0.StoreApplication.Domain.Models;
 using p0.StoreApplication.Storage.Adapters;
 using System.Collections.Generic;
 using System;
@@ -24,7 +24,9 @@ namespace p0.StoreApplication.Storage.Repositories
 
     public bool Insert(StoreOrder entry)
     {
-      orders.Add(entry);
+      using var context = new StoreApplicationDBContext();
+      context.StoreOrders.Add(entry);
+      context.SaveChanges();
       return true;
     }
 
@@ -35,23 +37,30 @@ namespace p0.StoreApplication.Storage.Repositories
 
     public List<StoreOrder> Select(Store store)
     {
-      using (var context = new StoreApplicationDBContext())
-      {
-        return context.StoreOrders.Where(s => s.StoreId == store.StoreId).ToList();
-      }
+      using var context = new StoreApplicationDBContext();
+      return context.StoreOrders.Where(s => s.StoreId == store.StoreId).ToList();
     }
 
     public List<StoreOrder> Select(Customer customer)
     {
-      using (var context = new StoreApplicationDBContext())
-      {
-        return context.StoreOrders.FromSqlRaw<StoreOrder>(
-        $"SELECT * FROM Store.StoreOrder AS o WHERE o.CustomerId = {customer.CustomerId}; "
-        ).ToList();
-      }
+      using var context = new StoreApplicationDBContext();
+      return context.StoreOrders.FromSqlRaw<StoreOrder>(
+      $"SELECT * FROM Store.StoreOrder AS o WHERE o.CustomerId = {customer.CustomerId}; "
+      ).ToList();
+    }
+    /// <summary>
+    /// Selects the latest order from the StoreOrder table by order date
+    /// </summary>
+    /// <returns></returns>
+    public StoreOrder SelectLastOrder()
+    {
+      using var context = new StoreApplicationDBContext();
+      return context.StoreOrders.FromSqlRaw<StoreOrder>(
+      $"SELECT * FROM Store.StoreOrder"
+      ).OrderBy(s => s.OrderDate).LastOrDefault();
     }
 
-    public StoreOrder Update()
+    public bool Update()
     {
       throw new System.NotImplementedException();
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using p0.StoreApplication.Storage.Model;
+using p0.StoreApplication.Domain.Models;
 using p0.StoreApplication.Storage.Repositories;
 
 namespace p0.StoreApplication.Client.Singletons
@@ -41,6 +41,14 @@ namespace p0.StoreApplication.Client.Singletons
     public List<StoreOrder> QueryOrders(Customer customer)
     {
       return _orderRepo.Select(customer);
+    }
+    /// <summary>
+    /// Selects the latest order from the StoreOrder table by order date
+    /// </summary>
+    /// <returns></returns>
+    public StoreOrder QueryLastOrder()
+    {
+      return _orderRepo.SelectLastOrder();
     }
   }
 }

@@ -1,5 +1,5 @@
 using p0.StoreApplication.Domain.Interfaces;
-using p0.StoreApplication.Storage.Model;
+using p0.StoreApplication.Domain.Models;
 using System.Collections.Generic;
 using System;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +14,8 @@ namespace p0.StoreApplication.Storage.Repositories
     private readonly List<Store> stores;
     public StoreRepository()
     {
-      using (var context = new StoreApplicationDBContext())
-      {
-        stores = context.Stores.FromSqlRaw<Store>("SELECT * FROM Store.Store").ToList();
-      }
+      using var context = new StoreApplicationDBContext();
+      stores = context.Stores.FromSqlRaw<Store>("SELECT * FROM Store.Store").ToList();
     }
     public bool Delete()
     {
@@ -36,8 +34,12 @@ namespace p0.StoreApplication.Storage.Repositories
       //return _fileAdapter.ReadFromFile<Store>(_path);
       return stores;
     }
-
-    public Store Update()
+    public Store Select(short id)
+    {
+      using var context = new StoreApplicationDBContext();
+      return context.Stores.FromSqlRaw<Store>($"SELECT * FROM Store.Store WHERE StoreId = {id}").FirstOrDefault();
+    }
+    public bool Update()
     {
       throw new System.NotImplementedException();
     }

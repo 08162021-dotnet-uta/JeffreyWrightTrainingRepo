@@ -1,21 +1,25 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
+
+#nullable disable
 
 namespace p0.StoreApplication.Domain.Models
 {
-  [Serializable()]
-  public class Customer
-  {
-    private string name;
-    public short CustomerId { get; set; }
-    public string Name
-    { get; set; }
-    public List<Order> Orders { get; } = new List<Order>();
-
-    public override string ToString()
+    public partial class Customer
     {
-      return Name;
-    }
+        public Customer()
+        {
+            StoreOrders = new HashSet<StoreOrder>();
+        }
+
+        public short CustomerId { get; set; }
+        public string Name { get; set; }
+
+        public virtual ICollection<StoreOrder> StoreOrders { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
   }
 }

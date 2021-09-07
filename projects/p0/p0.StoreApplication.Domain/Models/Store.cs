@@ -1,24 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#nullable disable
 
 namespace p0.StoreApplication.Domain.Models
 {
-  [Serializable()]
-  public class Store
-  {
-    public short StoreId { get; set; }
-    public string Name { get; set; }
-    public string City { get; set; }
-    public string State { get; set; }
-    public List<Order> Orders { get; set; }
-    public List<Product> Products { get; set; }
-
-    public override string ToString()
+    public partial class Store
     {
-      return Name + ": " + City + ", " + State;
+        public Store()
+        {
+            StoreOrders = new HashSet<StoreOrder>();
+            StoreInventories = new HashSet<StoreInventory>();
+        }
+
+        public short StoreId { get; set; }
+        public string Name { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+
+        public virtual ICollection<StoreOrder> StoreOrders { get; set; }
+        public virtual ICollection<StoreInventory> StoreInventories { get; set; }
+
+
+        public override string ToString()
+        {
+            return Name + ": " + City + ", " + State;
+        }
     }
-  }
 }

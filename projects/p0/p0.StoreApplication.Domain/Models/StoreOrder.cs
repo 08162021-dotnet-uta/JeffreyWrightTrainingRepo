@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace p0.StoreApplication.Storage.Model
+namespace p0.StoreApplication.Domain.Models
 {
     public partial class StoreOrder
     {
@@ -22,7 +22,7 @@ namespace p0.StoreApplication.Storage.Model
         public override string ToString()
         {
             /*string orderProducts = string.Join("\n", Products);*/
-            return "Customer: " + Customer + "\nStore: " + Store + "\nOrder Date: " + OrderDate /*+ "\nProducts: " + orderProducts*/;
+            return "Customer: " + CustomerId + "\nStore: " + StoreId + "\nOrder Date: " + OrderDate /*+ "\nProducts: " + orderProducts*/;
         }
   }
 }

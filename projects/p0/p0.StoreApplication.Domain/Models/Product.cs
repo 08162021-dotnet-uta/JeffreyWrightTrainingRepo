@@ -1,18 +1,26 @@
-using System;
-using System.Xml.Serialization;
+﻿using System;
+using System.Collections.Generic;
+
+#nullable disable
 
 namespace p0.StoreApplication.Domain.Models
 {
-  [Serializable()]
-  public class Product
-  {
-    public short ProductId { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public decimal Price { get; set; }
-    public override string ToString()
+    public partial class Product
     {
-      return Name + ": " + Description + "\n$" + Price;
+        public Product()
+        {
+            OrderProducts = new HashSet<OrderProduct>();
+            StoreInventories = new HashSet<StoreInventory>();
+        }
+        public short ProductId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
+        public virtual ICollection<StoreInventory> StoreInventories { get; set; }
+        public override string ToString()
+        {
+            return Name + ": $" + String.Format("{0:0.00}", Price) + " | " + Description;
+        }
     }
-  }
 }

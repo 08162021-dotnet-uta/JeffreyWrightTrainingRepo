@@ -98,6 +98,10 @@ ALTER TABLE Store.StoreOrder
 ADD CONSTRAINT CK_Order CHECK (ORDERDATE >= GETDATE());
 GO
 
+ALTER TABLE Store.StoreOrder
+DROP CONSTRAINT CK_ORDER
+GO
+
 --Stored Procedure
 CREATE OR ALTER PROCEDURE SP_AddCustomer(@NAME varchar(100))
 AS
@@ -116,3 +120,4 @@ BEGIN
 END
 
 EXEC SP_AddCustomer 'Fred';
+GO

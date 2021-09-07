@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using p0.StoreApplication.Storage.Model;
+using p0.StoreApplication.Domain.Models;
 using p0.StoreApplication.Storage.Repositories;
 
 namespace p0.StoreApplication.Client.Singletons
@@ -30,6 +30,14 @@ namespace p0.StoreApplication.Client.Singletons
     {
       _productRepo.Insert(product);
       Products = _productRepo.Select();
+    }
+    public List<Product> QueryProductList(Store store)
+    {
+      return _productRepo.Select(store);
+    }
+    public List<Product> QueryProductList(StoreOrder order)
+    {
+      return _productRepo.Select(order);
     }
   }
 }
