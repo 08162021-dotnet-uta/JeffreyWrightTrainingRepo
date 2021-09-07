@@ -9,8 +9,6 @@ namespace p0.StoreApplication.Storage.Repositories
 {
   public class StoreRepository : IRepository<Store>
   {
-    //private readonly string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Revature\dotnet-batch-2021-08-p0\StoreApplication\stores.xml";
-    //private static readonly FileAdapter _fileAdapter = new();
     private readonly List<Store> stores;
     public StoreRepository()
     {

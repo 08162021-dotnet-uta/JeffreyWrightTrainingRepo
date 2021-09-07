@@ -1,6 +1,5 @@
 ﻿using p0.StoreApplication.Domain.Interfaces;
 using p0.StoreApplication.Domain.Models;
-using p0.StoreApplication.Storage.Adapters;
 using System.Collections.Generic;
 using System;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +10,6 @@ namespace p0.StoreApplication.Storage.Repositories
   public class OrderProductRepository : IRepository<OrderProduct>
   {
     private readonly List<OrderProduct> orderProducts;
-    //private readonly string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Revature\dotnet-batch-2021-08-p0\StoreApplication\orders.xml";
-    //private static readonly FileAdapter _fileAdapter = new();
     public OrderProductRepository()
     {
       orderProducts = new List<OrderProduct>(){};

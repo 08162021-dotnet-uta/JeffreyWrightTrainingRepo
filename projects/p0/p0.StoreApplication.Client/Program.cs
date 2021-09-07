@@ -38,7 +38,7 @@ namespace p0.StoreApplication.Client
       /*using (var context = new dm.StoreApplicationDBContext())
       {
         /*dm.Customer r = new dm.Customer();
-        r.Name = "Robert Smith";
+        r.Name = "Wayne Wright";
         context.Customers.Add(r);
         context.SaveChanges();
         var customerList = context.Customers.FromSqlRaw<dm.Customer>("SELECT * FROM Customer.Customer").ToList();
@@ -543,6 +543,7 @@ namespace p0.StoreApplication.Client
 
     private static void PrintOrders(List<dm.StoreOrder> data)
     {
+      Log.Information("Method: Print Orders");
       foreach (var item in data)
       {
         //Customer: (function that gets the customer name from the customerID in item)

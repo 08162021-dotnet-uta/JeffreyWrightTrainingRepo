@@ -1,5 +1,4 @@
 using p0.StoreApplication.Domain.Models;
-using p0.StoreApplication.Storage.Adapters;
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
