@@ -97,7 +97,4 @@ FROM Store.OrderProduct;
 
 SELECT * FROM Store.OrderProduct WHERE ProductId = 1 AND OrderId = 1;
 
-DELETE FROM Store.StoreOrder WHERE OrderId NOT IN (SELECT OrderId FROM Store.OrderProduct)
-
-TRUNCATE TABLE Store.OrderProduct;
-DELETE FROM Store.StoreOrder;
+/*DELETE FROM Store.StoreOrder WHERE OrderId NOT IN (SELECT OrderId FROM Store.OrderProduct)*/

@@ -37,9 +37,9 @@ namespace p0.StoreApplication.Client
 
       /*using (var context = new dm.StoreApplicationDBContext())
       {
-        /*dm.Customer r = new dm.Customer();
-        r.Name = "Wayne Wright";
-        context.Customers.Add(r);
+        dm.Customer newCustomer = new dm.Customer();
+        newCustomer.Name = "Wayne Wright";
+        context.Customers.Add(newCustomer);
         context.SaveChanges();
         var customerList = context.Customers.FromSqlRaw<dm.Customer>("SELECT * FROM Customer.Customer").ToList();
         foreach (var customer in customerList)
