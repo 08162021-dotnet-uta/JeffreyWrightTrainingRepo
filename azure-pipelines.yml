@@ -8,23 +8,61 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+  
+variables:
+  pathproj: demos/StoreDemoWithJSAndApi/StoreDemoUi
 
-jobs:
-- job: job1
-  steps:
-  - script: echo Hello, world!
-    displayName: 'Run a one-line script'
+stages:
+- stage: stage1_build
+  jobs:
+  - job: job1
+    steps:
+    - script: echo this is how you use a variable => $(pathproj)
+      displayName: 'Run a one-line script'
 
-  - script: |
-      echo Add other tasks to build, test, and deploy your project.
-      echo See https://aka.ms/yaml
-    displayName: 'Run a multi-line script'
-    
-- job: job2
-  displayName: Job 2
-  steps:
-  - script: echo This is script1.job2!
-    displayName: 'Script 1 Job 2'
+    - script: |
+        echo Add other tasks to build, test, and deploy your project.
+        echo See https://aka.ms/yaml
+      displayName: 'Run a multi-line script'
 
-  - script: echo this is script2.job2.
-    displayName: 'Script 2 Job 2'
+  - job: job2
+    displayName: Job 2
+    steps:
+    - script: echo This is script1.job2!
+      displayName: 'Script 1 Job 2'
+
+    - script: echo this is script2.job2.
+      displayName: 'Script 2 Job 2'
+
+- stage: stage2_test
+  jobs:
+  - job: test_job1
+    steps:
+    - bash: echo stage2.step1
+      displayName: 'Run a one-line script'
+    - script: echo this is script2.job2.
+      displayName: 'run the stage2.script2'
+
+- stage: stage3_deploy
+  jobs:
+  - job: test_job1
+    steps:
+    - bash: echo stage2.step1
+      displayName: 'Run a one-line script'
+    - script: echo this is script2.job2.
+      displayName: 'run the stage2.script2'
+
+# You can do bash scripts, dotnet run, etc. Check the assistant!
+# Why YAML? Automate the build test deploy steps
+# If you don't want jobs to run sequentially, use the "dependsOn: [d]" keyword, where d can mean anything.
+# dependsOn: nobody will let it run independently.
+# Check this out. https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml
+# The $(Build.BuildId) is the same for each file.
+# pr: none
+# trigger:
+#   branches:
+#     include:
+#     - main
+#   paths:
+#     include:
+#     - $(pathtoproject)
