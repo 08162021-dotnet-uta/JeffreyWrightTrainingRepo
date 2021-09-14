@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
+using StoreApplication.Models;
 
-namespace StoreApplicationUI
+namespace StoreApplication
 {
   public class Startup
   {
@@ -29,10 +23,11 @@ namespace StoreApplicationUI
     {
 
       services.AddControllers();
-      services.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "StoreApplicationUI", Version = "v1" });
-      });
+      services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+      //services.AddSwaggerGen(c =>
+      //{
+      //  c.SwaggerDoc("v1", new OpenApiInfo { Title = "StoreApplication", Version = "v1" });
+      //});
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,17 +36,15 @@ namespace StoreApplicationUI
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StoreApplicationUI v1"));
+        //app.UseSwagger();
+        //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StoreApplication v1"));
       }
 
-      app.UseStatusCodePages();
-
-      app.UseHttpsRedirection();
-
-      app.UseRewriter(new RewriteOptions().AddRedirect("^$", "index.html"));
+      app.UseDefaultFiles();
 
       app.UseStaticFiles();
+
+      app.UseHttpsRedirection();
 
       app.UseRouting();
 
