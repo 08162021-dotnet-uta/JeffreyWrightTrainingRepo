@@ -32,10 +32,10 @@ namespace p1.StoreApplication.UI.Controllers
       return View();
     }
     // GET: OrderController/customer/5/Orderlist
-    [HttpGet("customer/{customerId}/Orderlist")]
-    public async Task<List<OrderV>> DetailsCustomer(int customerId)
+    [HttpGet("customer/{firstName}/{lastName}/Orderlist")]
+    public async Task<List<OrderV>> DetailsCustomer(string firstName, string lastName)
     {
-      CustomerV c = new() { CustomerId = customerId };
+      CustomerV c = new() { FirstName = firstName, LastName = lastName };
       CustomerV c1 = await _customerRepo.SelectAsync(c);
       Task<List<OrderV>> orders = _orderRepo.SelectAsync(c1);
       _logger.LogInformation("\n\nThere was a problem in the Orderlist method");
@@ -76,10 +76,11 @@ namespace p1.StoreApplication.UI.Controllers
         return NotFound();
       return Ok(o);
     }
-    // GET: OrderController/Create
+    // GET: OrderController/neworder
     [HttpPost("neworder")]
     public async Task<ActionResult<OrderV>> Create(OrderV o)
     {
+      o.OrderDate = DateTime.Now;
       if (!ModelState.IsValid) return BadRequest();
 
       OrderV o1 = await _orderRepo.InsertAsync(o);

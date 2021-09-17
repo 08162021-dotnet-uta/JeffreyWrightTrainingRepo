@@ -46,6 +46,12 @@ storebutton.addEventListener("click", (e) => {
         .catch(err => console.log(`There was an error ${err}`));
 });
 
+const orderbutton = document.querySelector("#orderbutton");
+
+orderbutton.addEventListener("click", (e) => {
+    location.href = "list-of-orders.html";
+});
+
 const logoutbutton = document.querySelector("#logoutbutton");
 
 logoutbutton.addEventListener("click", (e) => {

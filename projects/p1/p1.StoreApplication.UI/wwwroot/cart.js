@@ -68,8 +68,8 @@ function purchase() {
 			}
 			console.log(ordercart);
 			let d = new Date();
-			d.setMinutes(d.getTimezoneOffset());
-			const orderData = { OrderId: -1, CustomerId: user.CustomerId, StoreId: store.StoreId, OrderDate: d }
+			d.toISOString();
+			const orderData = { OrderId: -1, CustomerId: user.CustomerId, StoreId: store.StoreId, Date: d }
 			fetch(`order/neworder`, {
 				method: 'POST',
 				headers: {
@@ -92,18 +92,14 @@ function purchase() {
 			fetch(`order/lastorder`)
 				.then(res => res.json())
 				.then(lo => {
-					let promises = [];
-					for (let product in ordercart) {
-						promises.push(fetch(`orderProduct/makeOrderProduct`, {
-							method: 'POST',
-							headers: {
-								'Accept': 'application/json',
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify({ OrderProductId: -1, OrderId: lo.orderId, ProductId: ordercart[product].ProductId, Quanity: ordercart[product].Quantity })
-						}));
-					}
-					Promise.all(promises)
+					/*Fetch(fetch(`orderProduct/makeOrderProduct`, {
+						method: 'POST',
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(ordercart[0])
+					})
 						.then(res => {
 							if (!res.ok) {
 								console.log("unable to process the order");
@@ -114,7 +110,7 @@ function purchase() {
 						.then((res) => {
 							console.log(res);
 						})
-						.catch(err => console.log(`Failed to set page: ${err}`));
+						.catch(err => console.log(`Failed to set page: ${err}`));*/
 					}
                 )
 			
